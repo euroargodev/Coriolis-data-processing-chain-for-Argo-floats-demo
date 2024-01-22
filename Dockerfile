@@ -5,6 +5,16 @@ ARG RUN_FILE=run_decode_argo_2_nc_rt.sh
 ARG EXEC_FILE=decode_argo_2_nc_rt
 ARG JAVA_VERSION=11
 ARG GROUPID=9999
+ARG LIB_DIR=/app/lib
+ARG WRK_DIR=/app/wrk
+ARG EXE_DIR=/app/exe
+ARG DCK_DIR=/app/exe
+
+# environment variables
+ENV LIB_HOME=${LIB_DIR}
+ENV WRK_HOME=${WRK_DIR}
+ENV EXE_HOME=${EXE_DIR}
+ENV DCK_HOME=${DCK_DIR}
 
 # prepare os environment
 RUN \
@@ -30,10 +40,12 @@ RUN \
 COPY ${RUN_FILE} /app/run.sh
 COPY ${EXEC_FILE} /app/exec
 COPY entrypoint.sh /app/entrypoint.sh
+COPY _argo_decoder_20240111_conf_ir_sbd.json /tmp/_argo_decoder_20240111_conf_ir_sbd.json
+COPY _argo_decoder_20240111_conf_ir_sbd_rem.json /tmp/_argo_decoder_20240111_conf_ir_sbd_rem.json
 
 # adjust rights
 RUN \
-    mkdir -p /data/exe data/dck /data/wrk && \
+    mkdir -p ${LIB_DIR} ${WRK_DIR} ${EXE_DIR} ${DCK_DIR} && \
     chown -R root:gbatch /app && \
     chown -R root:gbatch /data && \
     chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh

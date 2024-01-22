@@ -34,20 +34,21 @@ decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_dec
 Exemple de décodage pour pour le flotteur `6902810` sur une machine Ifremer.
 
 ```bash
-set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft 
-set DCK = /home/coriolis_exp/binlx/co04/co0414/co041404/dck 
-set MAT = /export/home/logiciels/matlab/R2022b 
-set WRK = /home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
+# EXE=/home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft
+EXE=/home/coriolis_dev/val/binlx/co04/co0414/co041404
+DCK=/home/coriolis_exp/binlx/co04/co0414/co041404/dck
+MAT=/home/coriolis_exp/binlx/tools/matlab_runtime/R2022b
+WRK=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
 
 rm -rf $WRK/iridium/*_6902810 
 rm -rf $WRK/nc/6902810
 
-docker run -it --rm \
-# -v $EXE:/data/exe:ro \
--v $MAT:/data/mat:ro \
 # -v $DCK:/data/dck:ro \
-# -v $WRK:/data/wrk:ro \
-decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd.json' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+docker run -it --rm \
+-v $EXE:/data/exe:ro \
+-v $MAT:/data/lib:ro \
+-v $WRK:/data/wrk:rw \
+decode-argo:dev /data/lib 'rsynclog' 'all' 'configfile' '/tmp/_argo_decoder_20240111_conf_ir_sbd.json' 'configfile' '/tmp/_argo_decoder_20240111_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
