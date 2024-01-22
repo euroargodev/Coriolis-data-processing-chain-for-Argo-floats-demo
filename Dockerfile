@@ -5,10 +5,10 @@ ARG RUN_FILE=run_decode_argo_2_nc_rt.sh
 ARG EXEC_FILE=decode_argo_2_nc_rt
 ARG JAVA_VERSION=11
 ARG GROUPID=9999
-ARG LIB_DIR=/app/lib
-ARG WRK_DIR=/app/wrk
-ARG EXE_DIR=/app/exe
-ARG DCK_DIR=/app/exe
+ARG LIB_DIR=/data/lib
+ARG WRK_DIR=/data/wrk
+ARG EXE_DIR=/data/exe
+ARG DCK_DIR=/data/exe
 
 # environment variables
 ENV LIB_HOME=${LIB_DIR}
