@@ -10,11 +10,13 @@ docker build -t decode-argo:dev .
 
 ### Environnement Local
 
+Exemple de décodage pour pour le flotteur `6902810` en local.
+
 ```bash
-EXE=/home/lbruvryl/development/data/argo/decodeur/exe 
-DCK=/home/lbruvryl/development/data/argo/decodeur/dck 
-MAT=/home/lbruvryl/development/data/argo/decodeur/mat
-WRK=/home/lbruvryl/development/data/argo/decodeur/wrk
+EXE=/path-to-exe-dir/exe 
+DCK=/path-to-dck-dir/dck 
+MAT=/path-to-matlab-dir/mat
+WRK=/path-to-working-dir/wrk
 
 rm -rf $WRK/iridium/*_6902810 
 rm -rf $WRK/nc/6902810
@@ -29,13 +31,23 @@ decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_dec
 
 ### Environnement Ifremer
 
+Exemple de décodage pour pour le flotteur `6902810` sur une machine Ifremer.
+
 ```bash
-set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404 
-# set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft 
+set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft 
 set DCK = /home/coriolis_exp/binlx/co04/co0414/co041404/dck 
 set MAT = /export/home/logiciels/matlab/R2022b 
 set WRK = /home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
-docker run ...
+
+rm -rf $WRK/iridium/*_6902810 
+rm -rf $WRK/nc/6902810
+
+docker run -it --rm \
+# -v $EXE:/data/exe:ro \
+-v $MAT:/data/mat:ro \
+# -v $DCK:/data/dck:ro \
+# -v $WRK:/data/wrk:ro \
+decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd.json' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
