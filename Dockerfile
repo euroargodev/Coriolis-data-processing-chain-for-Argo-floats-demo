@@ -7,9 +7,10 @@ ARG JAVA_VERSION=11
 ARG GROUPID=9999
 
 # prepare os environment
-RUN apt-get -y update && \
-    echo "===== MISE A JOUR OS =====" && \
-    apt-get -y upgrade && \
+RUN \
+    # apt-get -y update && \
+    # echo "===== MISE A JOUR OS =====" && \
+    # apt-get -y upgrade && \
     # echo "===== INSTALLATION JAVA - OPENJDK ${JAVA_VERSION}) =====" && \
     # apt-get -y install openjdk-${JAVA_VERSION}-jdk-headless && \
     # echo "Java version :" && \
