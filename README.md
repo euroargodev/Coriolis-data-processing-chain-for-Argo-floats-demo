@@ -1,13 +1,12 @@
 # Projet de Dokerisation des décodeurs Argo
 
-## Architecture
+## Schéma d'architecture
 
 ```mermaid
 graph LR
    
-      subgraph Docker[Docker]
-            Argo-decoder[Decoder Argo_vx.x.x]
-            Argo-config[General configurations]
+      subgraph Docker[Docker container]
+            Argo-decoder[Decoder Argo_vX.X.X]
       end
     
       subgraph Volumes[Volumes]
@@ -183,7 +182,3 @@ ${LD_LIBRARY_PATH}:MR/R2022b/runtime/glnxa64:MR/R2022b/bin/glnxa64:MR/R2022b/sys
               run the shell script file run_decode_argo_2_nc_rt.sh 
               instead of setting environment variables. See 
               section 2 "Files to Deploy and Package".    
-
-### Schéma d'architecture
-
-
