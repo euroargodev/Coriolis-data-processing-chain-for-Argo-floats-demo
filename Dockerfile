@@ -21,14 +21,12 @@ RUN \
     apt-get -y update && \
     echo "===== MISE A JOUR OS =====" && \
     apt-get -y upgrade && \
-    # echo "===== INSTALLATION JAVA - OPENJDK ${JAVA_VERSION}) =====" && \
-    # apt-get -y install openjdk-${JAVA_VERSION}-jdk-headless && \
-    # echo "Java version :" && \
-    # java -version && \
+    echo "===== ADD MATLAB REQUIRED LIBRARIES =====" && \
+    apt-get -y install libxtst6 libxt6 && \
     echo "===== CREATION GROUPE UNIX gbatch (gid = ${GROUPID}) =====" && \
     groupadd --gid ${GROUPID} gbatch && \
     echo "===== GENERAL SYSTEM CLEANUP =====" && \
-    # apt-get purge -y manpages manpages-dev && \
+    apt-get purge -y manpages manpages-dev && \
     apt-get autoremove -y && \
     apt-get autoclean -y && \
     apt-get clean -y && \
@@ -47,6 +45,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 RUN \
     mkdir -p ${DATA_DIR} ${RUNTIME_DIR} ${REF_DIR} ${RUNTIME_CACHE_DIR} && \
     chown -R root:gbatch /app /mnt /tmp && \
+    chmod -R g+w /tmp && \
     chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh
 
 # use default user with no rights and required groupid

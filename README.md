@@ -67,7 +67,7 @@ docker build -t decode-argo:dev --build-arg GROUPID=10371 .
 Exécution le script suivant pour décoder le flotteur `6902810` sur une machine Ifremer.
 
 ```bash
-RUN=/home/coriolis_exp/binlx/tools/matlab_runtime/R2022b
+RUNTIME=/home/coriolis_dev/val/binlx/tools/matlab_runtime/R2022b
 DATA_OUTPUT=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
 DATA_OUTPUT_TRAJ=/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1
 DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106
@@ -78,9 +78,8 @@ REF_GREYLIST=/home/coriolis_dev/val/spool/co05/co0508/etc/greylist/rtqc_greylist
 rm -rf $DATA/iridium/*_6902810 
 rm -rf $DATA/nc/6902810
 
-# -v $DCK:/data/dck:ro \
 docker run -it --rm \
--v $RUN:/mnt/runtime:ro \
+-v $RUNTIME:/mnt/runtime:ro \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
 -v $DATA_OUTPUT_TRAJ:/mnt/data/wrk:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
@@ -88,7 +87,7 @@ docker run -it --rm \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
 -v $REF_GREYLIST:/mnt/ref/greylist.txt \
 --group-add gbatch \
-decode-argo:dev /mnt/data/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+decode-argo:dev /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
