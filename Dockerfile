@@ -18,13 +18,13 @@ ENV DCK_HOME=${DCK_DIR}
 
 # prepare os environment
 RUN \
-    # apt-get -y update && \
-    # echo "===== MISE A JOUR OS =====" && \
-    # apt-get -y upgrade && \
-    # echo "===== INSTALLATION JAVA - OPENJDK ${JAVA_VERSION}) =====" && \
-    # apt-get -y install openjdk-${JAVA_VERSION}-jdk-headless && \
-    # echo "Java version :" && \
-    # java -version && \
+    apt-get -y update && \
+    echo "===== MISE A JOUR OS =====" && \
+    apt-get -y upgrade && \
+    echo "===== INSTALLATION JAVA - OPENJDK ${JAVA_VERSION}) =====" && \
+    apt-get -y install openjdk-${JAVA_VERSION}-jdk-headless && \
+    echo "Java version :" && \
+    java -version && \
     echo "===== CREATION GROUPE UNIX gbatch (gid = ${GROUPID}) =====" && \
     groupadd --gid ${GROUPID} gbatch && \
     echo "===== GENERAL SYSTEM CLEANUP =====" && \

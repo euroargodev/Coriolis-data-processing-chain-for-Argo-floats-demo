@@ -1,16 +1,14 @@
 # Projet de Dokerisation des décodeurs Argo
 
-## Build de l'image Docker
+## Environnement Local
+
+Exécuter la commande suivante pour builder de l'image Docker.
 
 ```bash
 docker build -t decode-argo:dev .
 ```
 
-## Exécution du script
-
-### Environnement Local
-
-Exemple de décodage pour pour le flotteur `6902810` en local.
+Exécution le script suivant pour décoder le flotteur `6902810` en local.
 
 ```bash
 EXE=/path-to-exe-dir/exe 
@@ -29,9 +27,17 @@ docker run -it --rm \
 decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd.json' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
-### Environnement Ifremer
+## Environnement Ifremer
 
-Exemple de décodage pour pour le flotteur `6902810` sur une machine Ifremer.
+Exécuter la commande suivante pour builder de l'image Docker.
+
+```bash
+docker build -t decode-argo:dev --build-arg GROUPID=10371 .
+```
+
+### Exécution du script
+
+Exécution le script suivant pour décoder le flotteur `6902810` sur une machine Ifremer.
 
 ```bash
 # EXE=/home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft
