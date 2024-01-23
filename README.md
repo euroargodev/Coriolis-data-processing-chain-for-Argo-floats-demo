@@ -5,19 +5,26 @@
 ```mermaid
 graph LR
    
-      subgraph Docker[Docker container]
-            Argo-decoder[Decoder Argo_vX.X.X]
+      subgraph Docker[Docker]
+            Argo-decoder[DCK Argo.x.y.z]
       end
     
       subgraph Volumes[Volumes]
-            Ref[Ref]
-            Data[Data]
-            Runtime[Runtime]
+            subgraph Data[DATA]
+                  Message[message]
+                  Config[json]
+                  Output[netcdf]
+            end
+            Runtime[RUNTIME]
+            subgraph Ref[REF]
+                  Gebco[GEBCO]
+                  Greylist[Greylist]
+            end
       end
 
-      Docker -- Read only --> Ref
       Docker -- Read only --> Runtime
       Docker -- Read / Write --> Data
+      Docker -- Read only --> Ref
 ```
 
 ## Environnement Local
@@ -73,7 +80,7 @@ rm -rf $DATA/nc/6902810
 
 # -v $DCK:/data/dck:ro \
 docker run -it --rm \
--v $RUN:/mnt/data/runtime:ro \
+-v $RUN:/mnt/runtime:ro \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
 -v $DATA_OUTPUT_TRAJ:/mnt/data/wrk:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
