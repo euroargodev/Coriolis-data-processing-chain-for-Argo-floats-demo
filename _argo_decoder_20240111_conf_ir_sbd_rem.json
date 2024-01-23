@@ -5,31 +5,31 @@
    
    "FLOAT_TRANSMISSION_TYPE" : "4",
    
-   "DIR_INPUT_JSON_FLOAT_DECODING_PARAMETERS_FILE" : "/data/exe/decArgo_config_floats/json_float_info/",
+   "DIR_INPUT_JSON_FLOAT_DECODING_PARAMETERS_FILE" : "/mnt/data/config/decArgo_config_floats/json_float_info/",
 
    "HEX_ARGOS_FILE_FORMAT" : "",
    "DIR_INPUT_HEX_ARGOS_FILE_FORMAT_1" : "",
    "DIR_INPUT_HEX_ARGOS_FILE_FORMAT_2" : "",
    "HEX_ARGOS_DATA_DIRECTORY_STRUCTURE" : "",
    
-   "DIR_INPUT_RSYNC_DATA" : "/home/coriolis_dev/val/spool/co01/co0101/co010106/archive/cycle/",
-   "DIR_INPUT_RSYNC_LOG" : "/home/coriolis_dev/val/spool/co01/co0101/co010106/rsync_list/",
+   "DIR_INPUT_RSYNC_DATA" : "/mnt/data/rsync/archive/cycle/",
+   "DIR_INPUT_RSYNC_LOG" : "/mnt/data/rsync/rsync_list/",
 
-   "DIR_INPUT_JSON_TECH_LABEL_FILE" : "/data/exe/decArgo_20240111/decArgo_soft/config/_techParamNames/",
-   "DIR_INPUT_JSON_CONF_LABEL_FILE" : "/data/exe/decArgo_20240111/decArgo_soft/config/_configParamNames/",
+   "DIR_INPUT_JSON_TECH_LABEL_FILE" : "/mnt/data/config/decArgo_20240111/decArgo_soft/config/_techParamNames/",
+   "DIR_INPUT_JSON_CONF_LABEL_FILE" : "/mnt/data/config/decArgo_20240111/decArgo_soft/config/_configParamNames/",
 
-   "DIR_INPUT_JSON_FLOAT_META_DATA_FILE" : "/data/exe/decArgo_config_floats/json_float_meta_ir_sbd_remocean/",
+   "DIR_INPUT_JSON_FLOAT_META_DATA_FILE" : "/mnt/data/config/decArgo_config_floats/json_float_meta_ir_sbd_remocean/",
    
-   "DIR_INPUT_DM_BUFFER_LIST" : "/data/exe/decArgo_config_floats/float_dm_buffer_lists",
+   "DIR_INPUT_DM_BUFFER_LIST" : "/mnt/data/config/decArgo_config_floats/float_dm_buffer_lists",
 
-   "IRIDIUM_DATA_DIRECTORY" : "/data/wrk/iridium/",
+   "IRIDIUM_DATA_DIRECTORY" : "/mnt/data/output/iridium/",
 
-   "DIR_OUTPUT_LOG_FILE" : "/data/wrk/log/",
-   "DIR_OUTPUT_CSV_FILE" : "/data/wrk/csv/",
-   "DIR_OUTPUT_XML_FILE" : "/data/wrk/xml/",
-   "DIR_OUTPUT_NETCDF_FILE" : "/data/wrk/nc",
-   "DIR_OUTPUT_NETCDF_TRAJ_3_2_FILE" : "/data/wrk/nc/",   
-   "DIR_OUTPUT_NETCDF_TRAJ_3_1_FILE" : "/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1",   
+   "DIR_OUTPUT_LOG_FILE" : "/mnt/data/output/log/",
+   "DIR_OUTPUT_CSV_FILE" : "/mnt/data/output/csv/",
+   "DIR_OUTPUT_XML_FILE" : "/mnt/data/output/xml/",
+   "DIR_OUTPUT_NETCDF_FILE" : "/mnt/data/output/nc",
+   "DIR_OUTPUT_NETCDF_TRAJ_3_2_FILE" : "/mnt/data/output/nc/",   
+   "DIR_OUTPUT_NETCDF_TRAJ_3_1_FILE" : "/mnt/data/wrk",   
 
    "PROCESS_REMAINING_BUFFERS" : "0",
 
@@ -75,8 +75,8 @@
    "TEST059_NITRATE" : "1",
    "TEST062_BBP" : "1",
    "TEST063_CHLA" : "1",
-   "TEST004_GEBCO_FILE" : "/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc",
-   "TEST015_GREY_LIST_FILE" : "/home/coriolis_dev/val/spool/co05/co0508/etc/greylist/rtqc_greylist.txt",
+   "TEST004_GEBCO_FILE" : "/mnt/ref/gebco.nc",
+   "TEST015_GREY_LIST_FILE" : "/mnt/ref/greylist.txt",
    
    "ADD_THREE_MINUTES" : "0"
 }
