@@ -80,7 +80,8 @@ docker run -it --rm \
 -v $DATA_CONF:/mnt/data/config:ro \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
 -v $REF_GREYLIST:/mnt/ref/greylist.txt \
-decode-argo:dev /data/lib 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+--group-add gbatch \
+decode-argo:dev /mnt/data/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation

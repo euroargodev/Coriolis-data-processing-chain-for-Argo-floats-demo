@@ -7,12 +7,14 @@ ARG JAVA_VERSION=11
 ARG GROUPID=9999
 ARG DATA_DIR=/mnt/data
 ARG RUNTIME_DIR=/mnt/runtime
+ARG RUNTIME_CACHE_DIR=/tmp/matlab/cache
 ARG REF_DIR=/mnt/ref
 
 # environment variables
 ENV DATA_HOME=${DATA_DIR}
 ENV RUNTIME_HOME=${RUNTIME_DIR}
 ENV REF_HOME=${REF_DIR}
+ENV MCR_CACHE_ROOT=${RUNTIME_CACHE_DIR}
 
 # prepare os environment
 RUN \
@@ -43,9 +45,8 @@ COPY entrypoint.sh /app/entrypoint.sh
 
 # adjust rights
 RUN \
-    mkdir -p ${DATA_DIR} ${RUNTIME_DIR} ${REF_DIR} && \
-    chown -R root:gbatch /app && \
-    chown -R root:gbatch /mnt && \
+    mkdir -p ${DATA_DIR} ${RUNTIME_DIR} ${REF_DIR} ${RUNTIME_CACHE_DIR} && \
+    chown -R root:gbatch /app /mnt /tmp && \
     chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh
 
 # use default user with no rights and required groupid
