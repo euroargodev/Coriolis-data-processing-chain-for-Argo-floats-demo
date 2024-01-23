@@ -3,7 +3,7 @@ FROM gitlab-registry.ifremer.fr/ifremer-commons/docker/images/ubuntu:22.04
 # confifurable arguments
 ARG RUN_FILE=run_decode_argo_2_nc_rt.sh
 ARG EXEC_FILE=decode_argo_2_nc_rt
-ARG JAVA_VERSION=11
+ARG CONF=config
 ARG GROUPID=9999
 ARG DATA_DIR=/mnt/data
 ARG RUNTIME_DIR=/mnt/runtime
@@ -37,18 +37,16 @@ RUN \
 
 COPY ${RUN_FILE} /app/run.sh
 COPY ${EXEC_FILE} /app/exec
+COPY ${CONF} /app/config
 COPY _argo_decoder_20240111_conf_ir_sbd.json /app/config/argo_conf_ir_sbd.json
 COPY _argo_decoder_20240111_conf_ir_sbd_rem.json /app/config/argo_conf_ir_sbd_rem.json
 COPY entrypoint.sh /app/entrypoint.sh
 
 # adjust rights
 RUN \
-    mkdir -p ${DATA_DIR} ${RUNTIME_DIR} ${REF_DIR} ${RUNTIME_CACHE_DIR} && \
+    mkdir -p ${RUNTIME_CACHE_DIR} && \
     chown -R root:gbatch /app /mnt /tmp && \
     chmod -R g+w /tmp && \
     chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh
-
-# use default user with no rights and required groupid
-USER 207506:${GROUPID}
 
 ENTRYPOINT ["/app/entrypoint.sh"]

@@ -27,6 +27,16 @@ graph TD
       Docker -- Read only --> Ref
 ```
 
+**Flux** :
+
+<https://data-argo.ifremer.fr/ar_greylist.txt>
+
+**Volumes** :
+
+- `/mnt/runtime`
+- `/mnt/data/output`
+- `/mnt/data/rsync`
+
 ## Environnement Local
 
 Exécuter la commande suivante pour builder de l'image Docker.
@@ -69,24 +79,25 @@ Exécution le script suivant pour décoder le flotteur `6902810` sur une machine
 ```bash
 RUNTIME=/home/coriolis_dev/val/binlx/tools/matlab_runtime/R2022b
 DATA_OUTPUT=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
-DATA_OUTPUT_TRAJ=/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1
-DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106
-DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
-REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
-REF_GREYLIST=/home/coriolis_dev/val/spool/co05/co0508/etc/greylist/rtqc_greylist.txt
+# DATA_OUTPUT_TRAJ=/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1 # rien n'a été généré
+DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106 # rien n'a été généré
+DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404 # definir ce qu'il faut monter ou copier dans le conteneur
+# REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
+# REF_GREYLIST=/home/coriolis_dev/val/spool/co05/co0508/etc/greylist/rtqc_greylist.txt
 
-rm -rf $DATA/iridium/*_6902810 
-rm -rf $DATA/nc/6902810
+rm -rf $DATA_OUTPUT/iridium/*_6902810 
+rm -rf $DATA_OUTPUT/nc/6902810
 
 docker run -it --rm \
+--user "202345:10371" \
+--group-add gbatch \
 -v $RUNTIME:/mnt/runtime:ro \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
--v $DATA_OUTPUT_TRAJ:/mnt/data/wrk:rw \
+# -v $DATA_OUTPUT_TRAJ:/mnt/data/wrk:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
 -v $DATA_CONF:/mnt/data/config:ro \
--v $REF_GEBCO:/mnt/ref/gebco.nc \
--v $REF_GREYLIST:/mnt/ref/greylist.txt \
---group-add gbatch \
+# -v $REF_GEBCO:/mnt/ref/gebco.nc \
+# -v $REF_GREYLIST:/mnt/ref/greylist.txt \
 decode-argo:dev /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
