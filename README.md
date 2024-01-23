@@ -1,5 +1,26 @@
 # Projet de Dokerisation des décodeurs Argo
 
+## Architecture
+
+```mermaid
+graph LR
+   
+      subgraph Docker[Docker]
+            Argo-decoder[Decoder Argo_vx.x.x]
+            Argo-config[General configurations]
+      end
+    
+      subgraph Volumes[Volumes]
+            Ref[Ref]
+            Data[Data]
+            Runtime[Runtime]
+      end
+
+      Docker -- Read only --> Ref
+      Docker -- Read only --> Runtime
+      Docker -- Read / Write --> Data
+```
+
 ## Environnement Local
 
 Exécuter la commande suivante pour builder de l'image Docker.
@@ -40,21 +61,27 @@ docker build -t decode-argo:dev --build-arg GROUPID=10371 .
 Exécution le script suivant pour décoder le flotteur `6902810` sur une machine Ifremer.
 
 ```bash
-# EXE=/home/coriolis_dev/val/binlx/co04/co0414/co041404/decArgo_20231117/decArgo_soft/soft
-EXE=/home/coriolis_dev/val/binlx/co04/co0414/co041404
-DCK=/home/coriolis_exp/binlx/co04/co0414/co041404/dck
-MAT=/home/coriolis_exp/binlx/tools/matlab_runtime/R2022b
-WRK=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
+RUN=/home/coriolis_exp/binlx/tools/matlab_runtime/R2022b
+DATA_OUTPUT=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
+DATA_OUTPUT_TRAJ=/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1
+DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106
+DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
+REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
+REF_GREYLIST=/home/coriolis_dev/val/spool/co05/co0508/etc/greylist/rtqc_greylist.txt
 
-rm -rf $WRK/iridium/*_6902810 
-rm -rf $WRK/nc/6902810
+rm -rf $DATA/iridium/*_6902810 
+rm -rf $DATA/nc/6902810
 
 # -v $DCK:/data/dck:ro \
 docker run -it --rm \
--v $EXE:/data/exe:ro \
--v $MAT:/data/lib:ro \
--v $WRK:/data/wrk:rw \
-decode-argo:dev /data/lib 'rsynclog' 'all' 'configfile' '/tmp/_argo_decoder_20240111_conf_ir_sbd.json' 'configfile' '/tmp/_argo_decoder_20240111_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+-v $RUN:/mnt/data/runtime:ro \
+-v $DATA_OUTPUT:/mnt/data/output:rw \
+-v $DATA_OUTPUT_TRAJ:/mnt/data/wrk:rw \
+-v $DATA_RSYNC:/mnt/data/rsync:rw \
+-v $DATA_CONF:/mnt/data/config:ro \
+-v $REF_GEBCO:/mnt/ref/gebco.nc \
+-v $REF_GREYLIST:/mnt/ref/greylist.txt \
+decode-argo:dev /data/lib 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
