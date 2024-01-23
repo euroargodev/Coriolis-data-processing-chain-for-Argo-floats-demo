@@ -3,7 +3,7 @@
 ## Schéma d'architecture
 
 ```mermaid
-graph LR
+graph TD
    
       subgraph Docker[Docker]
             Argo-decoder[DCK Argo.x.y.z]
