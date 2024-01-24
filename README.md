@@ -88,6 +88,7 @@ rm -rf $DATA_OUTPUT/iridium/*6904101
 rm -rf $DATA_OUTPUT/nc/6904101
 
 docker run -it --rm \
+--name "argo-decoder-container" \
 --user "202345:10371" \
 --group-add gbatch \
 -v $RUNTIME:/mnt/runtime:ro \
