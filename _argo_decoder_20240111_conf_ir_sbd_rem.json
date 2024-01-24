@@ -75,7 +75,7 @@
    "TEST062_BBP" : "1",
    "TEST063_CHLA" : "1",
    "TEST004_GEBCO_FILE" : "/mnt/ref/gebco.nc",
-   "TEST015_GREY_LIST_FILE" : "/mnt/ref/greylist.txt",
+   "TEST015_GREY_LIST_FILE" : "/tmp/ar_greylist.txt",
    
    "ADD_THREE_MINUTES" : "0"
 }

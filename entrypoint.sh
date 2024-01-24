@@ -28,12 +28,11 @@ if [ ! -d ${REF_DIR} ]; then
 fi
 
 # Download ar_greylist and move it in /app/ref 
-# wget -O /tmp/ar_greylist.txt https://data-argo.ifremer.fr/ar_greylist.txt && mkdir -p /app/wrk/ref/ && mv /tmp/ar_greylist.txt /app/wrk/ref/ar_greylist.txt
-# if [ ! -f /app/wrk/ref/ar_greylist.txt ]; then
-#     echo "[ERROR] TEST015_GREY_LIST_FILE file not found: file should had have downloaded here 'https://data-argo.ifremer.fr/ar_greylist.txt', please check if that this URL is reachable" >&2
-#     exit 3
-# fi
-
+wget -O /tmp/ar_greylist.txt https://data-argo.ifremer.fr/ar_greylist.txt || rm -f /tmp/ar_greylist.txt
+if [ ! -f /tmp/ar_greylist.txt ]; then
+    echo "[ERROR] TEST015_GREY_LIST_FILE file not found: file should had have downloaded here 'https://data-argo.ifremer.fr/ar_greylist.txt', please check if that this URL is reachable" >&2
+    exit 3
+fi
 
 # JAVA_OPTS="-D${APP_NAME}.basedir=${BASEDIR}"
 echo "*** Starting ${APP_NAME} batch ***"
