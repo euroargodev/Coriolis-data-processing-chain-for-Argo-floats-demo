@@ -7,20 +7,22 @@ ARG CONF=config
 ARG GROUPID=9999
 ARG DATA_DIR=/mnt/data
 ARG RUNTIME_DIR=/mnt/runtime
-ARG RUNTIME_CACHE_DIR=/tmp/matlab/cache
+ARG WORK_DIR=/app/wrk
 ARG REF_DIR=/mnt/ref
 
 # environment variables
 ENV DATA_HOME=${DATA_DIR}
 ENV RUNTIME_HOME=${RUNTIME_DIR}
 ENV REF_HOME=${REF_DIR}
-ENV MCR_CACHE_ROOT=${RUNTIME_CACHE_DIR}
+ENV MCR_CACHE_ROOT=${WORK_DIR}/matlab/cache
 
 # prepare os environment
 RUN \
     apt-get -y update && \
     echo "===== MISE A JOUR OS =====" && \
     apt-get -y upgrade && \
+    echo "===== ADD TOOLS LIBRARIES =====" && \
+    apt-get -y install wget && \
     echo "===== ADD MATLAB REQUIRED LIBRARIES =====" && \
     apt-get -y install libxtst6 libxt6 && \
     echo "===== CREATION GROUPE UNIX gbatch (gid = ${GROUPID}) =====" && \
@@ -44,9 +46,9 @@ COPY entrypoint.sh /app/entrypoint.sh
 
 # adjust rights
 RUN \
-    mkdir -p ${RUNTIME_CACHE_DIR} && \
+    mkdir -p ${WORK_DIR}/matlab/cache && \
     chown -R root:gbatch /app /mnt /tmp && \
-    chmod -R g+w /tmp && \
+    chmod -R g+w ${WORK_DIR} && \
     chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]

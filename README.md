@@ -69,7 +69,8 @@ decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_dec
 Exécuter la commande suivante pour builder de l'image Docker.
 
 ```bash
-docker build -t decode-argo:dev --build-arg GROUPID=10371 .
+# docker build -t decode-argo:dev --build-arg GROUPID=10371 .
+ docker build -t decode-argo:dev
 ```
 
 ### Exécution du script

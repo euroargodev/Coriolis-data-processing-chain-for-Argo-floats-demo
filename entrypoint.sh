@@ -8,26 +8,31 @@ BASEDIR=/app
 
 # checks that the container is not running as root
 USER_UID=$(id -u)
-if [[ "${USER_UID}" -eq 0 ]]; then
-    echo "[ERROR] The container cannot be run as root  (UID =0) !Did you forget to launch the container with '-u <user>' or '-u <uid>' option ?" >&2
+if [ "${USER_UID}" -eq 0 ]; then
+    echo "[ERROR] The container cannot be run as root  (UID =0) ! Did you forget to launch the container with '-u <user>' or '-u <uid>' option ?" >&2
     exit 3
 fi
 
 # checks that mounts exists
-if [[ ! -d ${DATA_DIR} ]]; then
+if [ ! -d ${DATA_DIR} ]; then
     echo "[ERROR] Data directory not found: '${DATA_DIR}'" >&2
     exit 3
 fi
-if [[ ! -d ${RUNTIME_DIR} ]]; then
+if [ ! -d ${RUNTIME_DIR} ]; then
     echo "[ERROR] Runtime directory not found: '${RUNTIME_DIR}'" >&2
     exit 3
 fi
-if [[ ! -d ${REF_DIR} ]]; then
+if [ ! -d ${REF_DIR} ]; then
     echo "[ERROR] References directory not found: '${REF_DIR}'" >&2
     exit 3
 fi
 
-#wget https://data-argo.ifremer.fr/ar_greylist.txt
+# Download ar_greylist and move it in /app/ref 
+# wget -O /tmp/ar_greylist.txt https://data-argo.ifremer.fr/ar_greylist.txt && mkdir -p /app/wrk/ref/ && mv /tmp/ar_greylist.txt /app/wrk/ref/ar_greylist.txt
+# if [ ! -f /app/wrk/ref/ar_greylist.txt ]; then
+#     echo "[ERROR] TEST015_GREY_LIST_FILE file not found: file should had have downloaded here 'https://data-argo.ifremer.fr/ar_greylist.txt', please check if that this URL is reachable" >&2
+#     exit 3
+# fi
 
 
 # JAVA_OPTS="-D${APP_NAME}.basedir=${BASEDIR}"
