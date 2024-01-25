@@ -1,0 +1,8 @@
+include:
+  - project: 'dev-ops/hebergement_web/templates/remote-ci-templates'
+    ref: 'main'
+    file: 'Auto-DevOps.gitlab-ci.yml'
+
+default:
+  tags: [coriolis-runner]
+
