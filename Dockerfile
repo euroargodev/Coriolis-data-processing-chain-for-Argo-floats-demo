@@ -4,14 +4,14 @@ RUN \
     apt-get -y update && \
     apt-get -y install wget unzip
 
-ARG DEPLOY_TOKEN=gldt-FC8dsL6v3SVwaxe76hyp
-ARG APP_VERSION=1.0.0
-ARG APP_FILENAME=argo-decoder-${APP_VERSION}.zip
+ARG HEADER_TOKEN
+ARG APP_VERSION
+ARG APP_FILENAME
 
 WORKDIR /tmp
 
 RUN \
-    wget --header "DEPLOY-TOKEN: ${DEPLOY_TOKEN}" https://gitlab.ifremer.fr/api/v4/projects/4282/packages/generic/decode_argo/${APP_VERSION}/${APP_FILENAME} && \
+    wget --header "${HEADER_TOKEN}" https://gitlab.ifremer.fr/api/v4/projects/4282/packages/generic/decode_argo/${APP_VERSION}/${APP_FILENAME} && \
     unzip ${APP_FILENAME} && \
     rm ${APP_FILENAME}
 
