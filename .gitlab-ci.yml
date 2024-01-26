@@ -7,7 +7,7 @@ default:
   tags: [coriolis-runner]
 
 publish_docker_on_registry:
-  extends: [.docker-push-on-project-registry, .only-on-tag]
+  extends: [.docker-push-on-project-registry, .only-on-valid-tag:]
   stage: publish
   variables:
     TPL_IMAGE_BUILD_ARGS: "--build-arg \"HEADER_TOKEN=JOB-TOKEN: ${CI_JOB_TOKEN}\" --build-arg \"APP_VERSION=${CI_COMMIT_TAG}\" --build-arg \"APP_FILENAME=argo-decoder-${CI_COMMIT_TAG}.zip\""
