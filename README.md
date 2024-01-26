@@ -37,7 +37,15 @@ graph TD
 - `/mnt/data/output`
 - `/mnt/data/rsync`
 
-## Exécution
+## Intégration continue avec GitLab CI
+
+Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
+
+## Générer une nouvelle version du décodeur Dockerisé
+
+Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) git correspondant au numero de version du décodeur que vous souahitez dockerisée génèrera automatiquement une image docker comprenant ce décodeur, elle sera déposée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008)
+
+## Exécution le décodeur Dockerisé
 
 - Configuration commande pour l'Ifremer :
 
@@ -69,6 +77,7 @@ Exécution le script suivant pour décoder le flotteur `6902810`.
 rm -rf $DATA_OUTPUT/iridium/*6902810 
 rm -rf $DATA_OUTPUT/nc/6902810
 
+echo gldt-FCmo8EGse4KbPXNnsnAb | docker login gitlab-registry.ifremer.fr --password-stdin -u argo-decoder-registry-ro
 docker run -it --rm \
 --name "argo-decoder-container" \
 --user $APP_USER \
@@ -79,11 +88,8 @@ docker run -it --rm \
 -v $DATA_CONF:/mnt/data/config:ro \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
 gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+docker logout gitlab-registry.ifremer.fr
 ```
-
-## Intégration continue avec GitLab CI
-
-Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
 
 ## Developpement
 
