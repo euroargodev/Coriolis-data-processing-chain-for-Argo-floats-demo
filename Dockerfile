@@ -56,7 +56,7 @@ RUN \
 
 WORKDIR ${APP_DIR}
 
-COPY --from=prepare /tmp/* .
+COPY --from=prepare /tmp/ .
 COPY entrypoint.sh .
 
 # adjust rights
