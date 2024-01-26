@@ -37,66 +37,89 @@ graph TD
 - `/mnt/data/output`
 - `/mnt/data/rsync`
 
-## Environnement Local
+## Exécution
 
-Exécuter la commande suivante pour builder de l'image Docker.
-
-```bash
-docker build -t decode-argo:dev .
-```
-
-Exécution le script suivant pour décoder le flotteur `6902810` en local.
+- Configuration commande pour l'Ifremer :
 
 ```bash
-EXE=/path-to-exe-dir/exe 
-DCK=/path-to-dck-dir/dck 
-MAT=/path-to-matlab-dir/mat
-WRK=/path-to-working-dir/wrk
-
-rm -rf $WRK/iridium/*_6902810 
-rm -rf $WRK/nc/6902810
-
-docker run -it --rm \
--v $EXE:/data/exe:ro \
--v $MAT:/data/mat:ro \
--v $DCK:/data/dck:ro \
--v $WRK:/data/wrk:ro \
-decode-argo:dev /data/mat 'rsynclog' 'all' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd.json' 'configfile' '/data/exe/dat/_argo_decoder_20231117_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240112T145515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
-```
-
-## Environnement Ifremer
-
-Exécuter la commande suivante pour builder de l'image Docker.
-
-```bash
- docker build -t decode-argo:dev .
-```
-
-### Exécution du script
-
-Exécution le script suivant pour décoder le flotteur `6902810` sur une machine Ifremer.
-
-```bash
+APP_USER="202345:10371"
+APP_VERSION=20240111
 RUNTIME=/home/coriolis_dev/val/binlx/tools/matlab_runtime/R2022b
 DATA_OUTPUT=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
-# DATA_OUTPUT_TRAJ=/home/coriolis_dev/val/spool/co05/co0508/etc/coriolis-custom/traj-3.1 # rien n'a été généré
 DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106
 DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
 REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
+```
 
-rm -rf $DATA_OUTPUT/iridium/*6904101 
-rm -rf $DATA_OUTPUT/nc/6904101
+- Configuration commande pour un environnement quelconque :
+
+```bash
+APP_USER="<your_user_id>:<your_group_id>"
+APP_VERSION=REPLACE_BY_APP_VERSION
+RUNTIME=/path-to-runtime
+DATA_OUTPUT=/path-to-data-output
+DATA_RSYNC=/path-to-rsync
+DATA_CONF=/path-to-configurations
+REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
+```
+
+Exécution le script suivant pour décoder le flotteur `6902810`.
+
+```bash
+rm -rf $DATA_OUTPUT/iridium/*6902810 
+rm -rf $DATA_OUTPUT/nc/6902810
 
 docker run -it --rm \
 --name "argo-decoder-container" \
---user "202345:10371" \
+--user $APP_USER \
 --group-add gbatch \
 -v $RUNTIME:/mnt/runtime:ro \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
 -v $DATA_CONF:/mnt/data/config:ro \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
-decode-argo:dev /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
+gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+```
+
+## Intégration continue avec GitLab CI
+
+Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
+
+## Developpement
+
+### Build et exécution de l'image en local
+
+Exécuter la commande suivante pour builder de l'image Docker.
+
+```bash
+HEADER_TOKEN="DEPLOY-TOKEN: REPLACE_BY_DEPLOY_TOKEN"
+APP_VERSION=20240111
+APP_FILENAME=argo-decoder-${APP_VERSION}.zip
+docker build -t decode-argo:develop --build-arg "HEADER_TOKEN=${HEADER_TOKEN}" --build-arg "APP_VERSION=${APP_VERSION}" --build-arg "APP_FILENAME=${APP_FILENAME}" .
+```
+
+Exécution le script suivant pour décoder le flotteur `6902810`.
+
+```bash
+RUNTIME=/path-to-runtime
+DATA_OUTPUT=/path-to-data-output
+DATA_RSYNC=/path-to-rsync
+DATA_CONF=/path-to-configurations
+REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
+
+rm -rf $DATA_OUTPUT/iridium/*6902810 
+rm -rf $DATA_OUTPUT/nc/6902810
+
+docker run -it --rm \
+--name "argo-decoder-container" \
+--user "9999:9999" \
+--group-add gbatch \
+-v $RUNTIME:/mnt/runtime:ro \
+-v $DATA_OUTPUT:/mnt/data/output:rw \
+-v $DATA_RSYNC:/mnt/data/rsync:rw \
+-v $DATA_CONF:/mnt/data/config:ro \
+-v $REF_GEBCO:/mnt/ref/gebco.nc \
+decode-argo:develop /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
