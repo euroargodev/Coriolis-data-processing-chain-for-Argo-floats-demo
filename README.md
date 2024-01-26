@@ -81,6 +81,10 @@ docker run -it --rm \
 gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
+## Intégration continue avec GitLab CI
+
+Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
+
 ## Developpement
 
 ### Build et exécution de l'image en local
