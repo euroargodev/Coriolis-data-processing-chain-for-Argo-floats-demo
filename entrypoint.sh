@@ -36,4 +36,4 @@ fi
 
 # JAVA_OPTS="-D${APP_NAME}.basedir=${BASEDIR}"
 echo "*** Starting ${APP_NAME} batch ***"
-/app/run.sh $@
+${APP_HOME}/${APP_RUN_FILE} $@

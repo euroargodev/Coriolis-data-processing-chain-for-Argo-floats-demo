@@ -1,18 +1,36 @@
-FROM gitlab-registry.ifremer.fr/ifremer-commons/docker/images/ubuntu:22.04
+FROM gitlab-registry.ifremer.fr/ifremer-commons/docker/images/ubuntu:22.04 as prepare
+
+RUN \
+    apt-get -y update && \
+    apt-get -y install wget unzip
+
+ARG HEADER_TOKEN
+ARG APP_VERSION
+ARG APP_FILENAME
+
+WORKDIR /tmp
+
+RUN \
+    wget --header "${HEADER_TOKEN}" https://gitlab.ifremer.fr/api/v4/projects/4282/packages/generic/decode_argo/${APP_VERSION}/${APP_FILENAME} && \
+    unzip ${APP_FILENAME} && \
+    rm ${APP_FILENAME}
+
+FROM gitlab-registry.ifremer.fr/ifremer-commons/docker/images/ubuntu:22.04 as runtime
 
 # confifurable arguments
 ARG RUN_FILE=run_decode_argo_2_nc_rt.sh
-ARG EXEC_FILE=decode_argo_2_nc_rt
-ARG CONF=config
 ARG GROUPID=9999
 ARG DATA_DIR=/mnt/data
 ARG RUNTIME_DIR=/mnt/runtime
 ARG REF_DIR=/mnt/ref
+ENV APP_DIR=/app
 
 # environment variables
 ENV DATA_HOME=${DATA_DIR}
 ENV RUNTIME_HOME=${RUNTIME_DIR}
 ENV REF_HOME=${REF_DIR}
+ENV APP_HOME=${APP_DIR}
+ENV APP_RUN_FILE=${RUN_FILE}
 ENV MCR_CACHE_ROOT=/tmp/matlab/cache
 
 # prepare os environment
@@ -36,17 +54,14 @@ RUN \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/*
 
-COPY ${RUN_FILE} /app/run.sh
-COPY ${EXEC_FILE} /app/exec
-COPY ${CONF} /app/config
-COPY _argo_decoder_20240111_conf_ir_sbd.json /app/config/argo_conf_ir_sbd.json
-COPY _argo_decoder_20240111_conf_ir_sbd_rem.json /app/config/argo_conf_ir_sbd_rem.json
-COPY entrypoint.sh /app/entrypoint.sh
+WORKDIR ${APP_DIR}
+
+COPY --from=prepare /tmp/* .
+COPY entrypoint.sh .
 
 # adjust rights
 RUN \
-    # mkdir -p /tmp/matlab/cache && \
-    chown -R root:gbatch /app /mnt /tmp && \
-    chmod ug+x /app/entrypoint.sh /app/exec /app/run.sh
+    chown -R root:gbatch ${APP_DIR} /mnt /tmp && \
+    find . -type f -exec chmod ug+x {} \;
 
 ENTRYPOINT ["/app/entrypoint.sh"]
