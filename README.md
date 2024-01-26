@@ -98,7 +98,7 @@ docker logout gitlab-registry.ifremer.fr
 Exécuter la commande suivante pour builder de l'image Docker.
 
 ```bash
-HEADER_TOKEN="DEPLOY-TOKEN: REPLACE_BY_DEPLOY_TOKEN"
+HEADER_TOKEN="DEPLOY-TOKEN:gldt-gWeztEBE2TuwkiT1n8iY"
 APP_VERSION=20240111
 APP_FILENAME=argo-decoder-${APP_VERSION}.zip
 docker build -t decode-argo:develop --build-arg "HEADER_TOKEN=${HEADER_TOKEN}" --build-arg "APP_VERSION=${APP_VERSION}" --build-arg "APP_FILENAME=${APP_FILENAME}" .
