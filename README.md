@@ -74,8 +74,8 @@ REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
 Exécution le script suivant pour décoder le flotteur `6902810`.
 
 ```bash
-rm -rf $DATA_OUTPUT/iridium/*6902810 
-rm -rf $DATA_OUTPUT/nc/6902810
+rm -rf $DATA_OUTPUT/iridium/*6904101 
+rm -rf $DATA_OUTPUT/nc/6904101
 
 echo REPLACE_BY_DEPLOY_TOKEN | docker login gitlab-registry.ifremer.fr --password-stdin -u argo-decoder-registry-ro
 docker run -it --rm \
@@ -87,7 +87,7 @@ docker run -it --rm \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
 -v $DATA_CONF:/mnt/data/config:ro \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
-gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
 docker logout gitlab-registry.ifremer.fr
 ```
 
