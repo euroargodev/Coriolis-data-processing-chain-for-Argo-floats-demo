@@ -43,15 +43,15 @@ Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/h
 
 ## Conteneurisation
 
-### Préparation du livrable
+### Préparer le livrable
 
 ### Générer une image Docker
 
-Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) correspondant au numero de version du décodeur que vous souahitez dockerisée aura pour effet de générer automatiquement une image docker comprenant le décodeur, cette image sera stockée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008).
+Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) correspondant au numero de version du livrable que vous souhaitez dockeriser aura pour effet de générer automatiquement une image docker comprenant le livrable. Cette image sera stockée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008).
 
-## Exécution
+### Exécution de l'image
 
-- Configuration exécution dans l'environnement Ifremer :
+- Configuration pour exécution dans l'environnement Ifremer :
 
 ```bash
 APP_USER="202345:10371"
@@ -63,7 +63,7 @@ DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
 REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
 ```
 
-- Configuration exécution dans un environnement quelconque :
+- Configuration pour exécution dans un environnement quelconque :
 
 ```bash
 APP_USER="<your_user_id>:<your_group_id>"
