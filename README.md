@@ -45,6 +45,25 @@ Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/h
 
 ### Préparer le livrable
 
+```bash
+set TMP = /home/trashoo00/oo/coriolis/argo-docker
+set DCK = /home/coriolis_exp/binlx/co04/co0414/co041404/dck
+set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404
+set DECODER_VERSION = 20240111
+rm -rf $TMP; mkdir -p $TMP/zip; mkdir -p $TMP/exe/config
+cp $DCK/decode_argo_2_nc_rt/for_redistribution_files_only/run_decode_argo_2_nc_rt.sh $TMP/exe
+cp $DCK/decode_argo_2_nc_rt/for_redistribution_files_only/decode_argo_2_nc_rt $TMP/exe
+cp $EXE/dat/_argo_decoder_$DECODER_VERSION\_conf_ir_sbd_rem.json $TMP/exe/config/_argo_decoder_conf_ir_sbd_rem.json
+cp $EXE/dat/_argo_decoder_$DECODER_VERSION\_conf_ir_sbd.json $TMP/exe/config/_argo_decoder_conf_ir_sbd.json
+cp -r $EXE/decArgo_20240111/decArgo_soft/config/_techParamNames $TMP/exe/config/
+cp -r $EXE/decArgo_20240111/decArgo_soft/config/_configParamNames $TMP/exe/config/
+cd $TMP/exe; zip -r $TMP/zip/argo-decoder-$DECODER_VERSION.zip *
+set DECODER_GITLAB_TOKEN=***
+set DECODER_FILEPATH=/home/trashoo00/oo/coriolis/argo-docker/zip/argo-decoder-$DECODER_VERSION.zip
+set DECODER_FILENAME=argo-decoder-$DECODER_VERSION.zip
+curl --header "DEPLOY-TOKEN: $DECODER_GITLAB_TOKEN" --upload-file $DECODER_FILEPATH  "https://gitlab.ifremer.fr/api/v4/projects/4282/packages/generic/decode_argo/$DECODER_VERSION/$DECODER_FILENAME"
+```
+
 ### Générer une image Docker
 
 Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) correspondant au numero de version du livrable que vous souhaitez dockeriser aura pour effet de générer automatiquement une image docker comprenant le livrable. Cette image sera stockée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008).
