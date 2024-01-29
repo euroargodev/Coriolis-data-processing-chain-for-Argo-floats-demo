@@ -41,13 +41,17 @@ graph TD
 
 Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
 
-## Générer une nouvelle version du décodeur Dockerisé
+## Conteneurisation
 
-Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) git correspondant au numero de version du décodeur que vous souahitez dockerisée génèrera automatiquement une image docker comprenant ce décodeur, elle sera déposée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008)
+### Préparation du livrable
 
-## Exécution le décodeur Dockerisé
+### Générer une image Docker
 
-- Configuration commande pour l'Ifremer :
+Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) correspondant au numero de version du décodeur que vous souahitez dockerisée aura pour effet de générer automatiquement une image docker comprenant le décodeur, cette image sera stockée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008).
+
+## Exécution
+
+- Configuration exécution dans l'environnement Ifremer :
 
 ```bash
 APP_USER="202345:10371"
@@ -59,7 +63,7 @@ DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
 REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
 ```
 
-- Configuration commande pour un environnement quelconque :
+- Configuration exécution dans un environnement quelconque :
 
 ```bash
 APP_USER="<your_user_id>:<your_group_id>"
@@ -71,7 +75,7 @@ DATA_CONF=/path-to-configurations
 REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
 ```
 
-Exécution le script suivant pour décoder le flotteur `6902810`.
+Exécution le script suivant pour décoder le flotteur `6904101`.
 
 ```bash
 rm -rf $DATA_OUTPUT/iridium/*6904101 
