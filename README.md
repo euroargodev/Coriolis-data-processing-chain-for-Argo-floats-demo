@@ -1,6 +1,6 @@
-# Projet de Dokerisation des décodeurs Argo
+# Argo decoder Docker
 
-## Schéma d'architecture
+## Architecture diagram
 
 ```mermaid
 graph TD
@@ -33,56 +33,15 @@ graph TD
 
 **Volumes** :
 
-- `/mnt/runtime`
-- `/mnt/data/output`
-- `/mnt/data/rsync`
+- `/mnt/runtime` : Matlab runtime environment
+- `/mnt/data/output` : Output files directory
+- `/mnt/data/rsync` : Rsync file directory
+- `/mnt/data/config` :  external configurations directory
+- `/mnt/ref/gebco.nc` : GEBCO file
 
-## Intégration continue avec GitLab CI
+## Run Docker image
 
-Documentation des tâches GitLab CI : <https://dev-ops.gitlab-pages.ifremer.fr/hebergement_web/templates/remote-ci-templates/#taches>
-
-## Conteneurisation
-
-### Préparer le livrable
-
-```bash
-set TMP = /home/trashoo00/oo/coriolis/argo-docker
-set DCK = /home/coriolis_exp/binlx/co04/co0414/co041404/dck
-set EXE = /home/coriolis_dev/val/binlx/co04/co0414/co041404
-set DECODER_VERSION = 20240111
-rm -rf $TMP; mkdir -p $TMP/zip; mkdir -p $TMP/exe/config
-cp $DCK/decode_argo_2_nc_rt/for_redistribution_files_only/run_decode_argo_2_nc_rt.sh $TMP/exe
-cp $DCK/decode_argo_2_nc_rt/for_redistribution_files_only/decode_argo_2_nc_rt $TMP/exe
-cp $EXE/dat/_argo_decoder_$DECODER_VERSION\_conf_ir_sbd_rem.json $TMP/exe/config/_argo_decoder_conf_ir_sbd_rem.json
-cp $EXE/dat/_argo_decoder_$DECODER_VERSION\_conf_ir_sbd.json $TMP/exe/config/_argo_decoder_conf_ir_sbd.json
-cp -r $EXE/decArgo_20240111/decArgo_soft/config/_techParamNames $TMP/exe/config/
-cp -r $EXE/decArgo_20240111/decArgo_soft/config/_configParamNames $TMP/exe/config/
-cd $TMP/exe; zip -r $TMP/zip/argo-decoder-$DECODER_VERSION.zip *
-set DECODER_GITLAB_TOKEN=***
-set DECODER_FILEPATH=/home/trashoo00/oo/coriolis/argo-docker/zip/argo-decoder-$DECODER_VERSION.zip
-set DECODER_FILENAME=argo-decoder-$DECODER_VERSION.zip
-curl --header "DEPLOY-TOKEN: $DECODER_GITLAB_TOKEN" --upload-file $DECODER_FILEPATH  "https://gitlab.ifremer.fr/api/v4/projects/4282/packages/generic/decode_argo/$DECODER_VERSION/$DECODER_FILENAME"
-```
-
-### Générer une image Docker
-
-Créer un [TAG](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/-/tags) correspondant au numero de version du livrable que vous souhaitez dockeriser aura pour effet de générer automatiquement une image docker comprenant le livrable. Cette image sera stockée dans le [conteneur registry du projet](https://gitlab.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo/container_registry/1008).
-
-### Exécution de l'image
-
-- Configuration pour exécution dans l'environnement Ifremer :
-
-```bash
-APP_USER="202345:10371"
-APP_VERSION=20240111
-RUNTIME=/home/coriolis_dev/val/binlx/tools/matlab_runtime/R2022b
-DATA_OUTPUT=/home/coriolis_dev/val/spool/co04/co0414/co041404/ir_sbd
-DATA_RSYNC=/home/coriolis_dev/val/spool/co01/co0101/co010106
-DATA_CONF=/home/coriolis_dev/val/binlx/co04/co0414/co041404
-REF_GEBCO=/home/coriolis_exp/dat/co03/bathy/GEBCO_2021/GEBCO_2021.nc
-```
-
-- Configuration pour exécution dans un environnement quelconque :
+- Configuration for running in your :
 
 ```bash
 APP_USER="<your_user_id>:<your_group_id>"
@@ -94,7 +53,7 @@ DATA_CONF=/path-to-configurations
 REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
 ```
 
-Exécution le script suivant pour décoder le flotteur `6904101`.
+- Run the following script to decode the float `6904101`.
 
 ```bash
 rm -rf $DATA_OUTPUT/iridium/*6904101 
@@ -109,16 +68,16 @@ docker run -it --rm \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
 -v $DATA_CONF:/mnt/data/config:ro \
--v $REF_GEBCO:/mnt/ref/gebco.nc \
+-v $REF_GEBCO:/mnt/ref/gebco.nc:ro \
 gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
 docker logout gitlab-registry.ifremer.fr
 ```
 
-## Developpement
+## Development
 
-### Build et exécution de l'image en local
+### Build and run image locally
 
-Exécuter la commande suivante pour builder de l'image Docker.
+- Run the following command to build the Docker image.
 
 ```bash
 HEADER_TOKEN="DEPLOY-TOKEN: REPLACE_BY_DEPLOY_TOKEN"
@@ -127,9 +86,10 @@ APP_FILENAME=argo-decoder-${APP_VERSION}.zip
 docker build -t decode-argo:develop --build-arg "HEADER_TOKEN=${HEADER_TOKEN}" --build-arg "APP_VERSION=${APP_VERSION}" --build-arg "APP_FILENAME=${APP_FILENAME}" .
 ```
 
-Exécution le script suivant pour décoder le flotteur `6902810`.
+- Run the following script to decode the float `6902810`.
 
 ```bash
+APP_USER="<your_user_id>:<your_group_id>"
 RUNTIME=/path-to-runtime
 DATA_OUTPUT=/path-to-data-output
 DATA_RSYNC=/path-to-rsync
@@ -141,14 +101,14 @@ rm -rf $DATA_OUTPUT/nc/6902810
 
 docker run -it --rm \
 --name "argo-decoder-container" \
---user "9999:9999" \
+--user $APP_USER \
 --group-add gbatch \
 -v $RUNTIME:/mnt/runtime:ro \
 -v $DATA_OUTPUT:/mnt/data/output:rw \
 -v $DATA_RSYNC:/mnt/data/rsync:rw \
 -v $DATA_CONF:/mnt/data/config:ro \
 -v $REF_GEBCO:/mnt/ref/gebco.nc \
-decode-argo:develop /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/argo_conf_ir_sbd.json' 'configfile' '/app/config/argo_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6902810' 'PROCESS_REMAINING_BUFFERS' '1'
+decode_argo:develop /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Script documentation
