@@ -41,7 +41,21 @@ graph TD
 
 ## Run Docker image
 
-- Configuration for running in your :
+1. Clone repository
+
+      ```bash
+      git clone https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats.git
+      ```
+
+2. Create environment variables file from `.env.docs` to configure your environment
+
+      ```bash
+      cp .env.docs .env
+      ```
+
+3. Configure your environement by editing `.env`
+
+4. Run your decoder with docker
 
 ```bash
 APP_USER="<your_user_id>:<your_group_id>"
