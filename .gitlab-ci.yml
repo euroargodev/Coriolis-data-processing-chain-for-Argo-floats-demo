@@ -11,9 +11,9 @@ stages:
   - quality
   - release
   - publish
+  - share
   - security
   - docs
-  - share
 
 
 default:
