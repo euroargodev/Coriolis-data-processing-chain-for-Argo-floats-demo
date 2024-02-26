@@ -39,7 +39,7 @@ graph TD
 - `/mnt/data/config` :  external configurations directory
 - `/mnt/ref/gebco.nc` : GEBCO file
 
-## Run Docker image
+## Run image with docker compose
 
 1. Clone repository
 
@@ -55,7 +55,11 @@ graph TD
 
 3. Configure your environement by editing `.env`
 
-4. Run your decoder with docker
+4. Run your decoder with docker compose
+
+
+
+## Run image with docker
 
 ```bash
 APP_USER="<your_user_id>:<your_group_id>"
