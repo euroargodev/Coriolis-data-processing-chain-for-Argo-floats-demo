@@ -35,11 +35,11 @@ graph TD
 
 - `/mnt/runtime` : Matlab runtime environment
 - `/mnt/data/output` : Output files directory
-- `/mnt/data/rsync` : Rsync file directory
+- `/mnt/data/rsync` : Input files directory
 - `/mnt/data/config` :  external configurations directory
 - `/mnt/ref/gebco.nc` : GEBCO file
 
-## Run image with docker compose
+## Run demo with docker compose
 
 1. Clone repository
 
@@ -57,38 +57,44 @@ graph TD
 
 4. Run your decoder with docker compose
 
+      ```bash
+      docker compose up
+      ```
 
+## Run image in your environment
 
-## Run image with docker
+1. Create environment variables `.env` file to configure your environment
 
 ```bash
-APP_USER="<your_user_id>:<your_group_id>"
-APP_VERSION=REPLACE_BY_APP_VERSION
-RUNTIME=/path-to-runtime
-DATA_OUTPUT=/path-to-data-output
-DATA_RSYNC=/path-to-rsync
-DATA_CONF=/path-to-configurations
-REF_GEBCO=/path-to-gebco/GEBCO_2021.nc
+DECODER_IMAGE=<decoder image path>
+DECODER_IMAGE_TAG=<decoder image tag>
+
+DECODER_RUNTIME_DIR=<path to runtime directory>
+DECODER_DATA_INPUT=<path to input directory>
+DECODER_DATA_CONF=<path to conf directory>
+DECODER_DATA_OUTPUT=<path to output directory>
+DECODER_REF_GEBCO=<path to gebco file>
+
+USER_ID=<uid volumes owner>
+GROUP_ID=<gid volumes owner>
 ```
 
-- Run the following script to decode the float `6904101`.
+- Run the following script as an example to decode the float `6904101`.
 
 ```bash
 rm -rf $DATA_OUTPUT/iridium/*6904101 
 rm -rf $DATA_OUTPUT/nc/6904101
 
-echo REPLACE_BY_DEPLOY_TOKEN | docker login gitlab-registry.ifremer.fr --password-stdin -u argo-decoder-registry-ro
 docker run -it --rm \
 --name "argo-decoder-container" \
---user $APP_USER \
+--user $USER_ID:$GROUP_ID \
 --group-add gbatch \
--v $RUNTIME:/mnt/runtime:ro \
--v $DATA_OUTPUT:/mnt/data/output:rw \
--v $DATA_RSYNC:/mnt/data/rsync:rw \
--v $DATA_CONF:/mnt/data/config:ro \
--v $REF_GEBCO:/mnt/ref/gebco.nc:ro \
-gitlab-registry.ifremer.fr/coriolis/developpement/argo/decodage/decode_argo:$APP_VERSION /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
-docker logout gitlab-registry.ifremer.fr
+-v $DECODER_RUNTIME_DIR:/mnt/runtime:ro \
+-v $DECODER_DATA_INPUT:/mnt/data/rsync:rw \
+-v $DECODER_DATA_CONF:/mnt/data/config:ro \
+-v $DECODER_DATA_OUTPUT:/mnt/data/output:rw \
+-v $DECODER_REF_GEBCO:/mnt/ref/gebco.nc:ro \
+$DECODER_IMAGE:$DECODER_IMAGE_TAG /mnt/runtime 'rsynclog' 'all' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd.json' 'configfile' '/app/config/_argo_decoder_conf_ir_sbd_rem.json' 'xmlreport' 'co041404_20240124T112515Z_458271.xml' 'floatwmo' '6904101' 'PROCESS_REMAINING_BUFFERS' '1'
 ```
 
 ## Development
