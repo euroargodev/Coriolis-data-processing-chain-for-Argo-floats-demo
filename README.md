@@ -1,4 +1,6 @@
-# Argo decoder Docker
+# Coriolis-data-processing-chain-for-Argo-floats-container
+
+Coriolis data processing chain for Argo floats Containerized
 
 ## Architecture diagram
 
@@ -41,7 +43,7 @@ graph TD
 
 ## Run image in your environment
 
-- Define next variables to configure your environment
+- Define next variables to configure the decoder on your environment
 
 ```bash
 DECODER_IMAGE=<decoder image path>
