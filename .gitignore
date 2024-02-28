@@ -1,0 +1,4 @@
+.env.ifremer
+.env.local
+decArgo_demo/output/**
+!decArgo_demo/output/log
