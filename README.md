@@ -109,7 +109,7 @@ This demonstration will run the Coriolis-data-processing-chain-for-Argo-floats b
 
    ```bash
    cd path-to-working-directory
-   git clone -b feature/workshop https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo.git
+   git clone https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo.git
    cd Coriolis-data-processing-chain-for-Argo-floats-demo
    ```
 
