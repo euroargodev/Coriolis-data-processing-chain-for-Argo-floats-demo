@@ -1,4 +1,4 @@
-# Coriolis-data-processing-chain-for-Argo-floats-container
+# Coriolis-data-processing-chain-for-Argo-floats-demo
 
 Coriolis data processing chain for Argo floats Containerized
 
