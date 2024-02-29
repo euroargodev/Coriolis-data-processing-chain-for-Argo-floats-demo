@@ -109,17 +109,17 @@ This demonstration will run the Coriolis-data-processing-chain-for-Argo-floats b
 
    ```bash
    cd path-to-working-directory
-   git clone -b feature/workshop https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats.git
-   cd Coriolis-data-processing-chain-for-Argo-floats
+   git clone -b feature/workshop https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo.git
+   cd Coriolis-data-processing-chain-for-Argo-floats-demo
    ```
 
    - Option 2 : Manual download
 
    ```bash
    cd path-to-working-directory
-   wget https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats/archive/refs/heads/feature/workshop.zip
-   unzip workshop.zip -d ./Coriolis-data-processing-chain-for-Argo-floats
-   cd Coriolis-data-processing-chain-for-Argo-floats
+   wget https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo/archive/refs/heads/main.zip
+   unzip main.zip -d ./Coriolis-data-processing-chain-for-Argo-floats-demo
+   cd Coriolis-data-processing-chain-for-Argo-floats-demo
    ```
 
 2. Edit environement variables `.env` file with your favorite text editor to setup your configuration
