@@ -4,7 +4,7 @@ Coriolis data processing chain for Argo floats Containerized
 
 ## Architecture diagram
 
-![decoder_docker_argo_workshop drawio (1)](https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo/assets/5701109/b584ccb9-d31a-4e09-930e-6121f6552182)
+![decoder_docker_argo_workshop drawio](https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo/assets/5701109/c2f5236e-53db-4435-b6c4-132d327b5e1d)
 
 **Flux** :
 
