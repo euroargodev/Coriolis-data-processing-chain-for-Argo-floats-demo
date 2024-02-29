@@ -163,8 +163,8 @@ This demonstration will run the Coriolis-data-processing-chain-for-Argo-floats b
 
       ```bash
       # or at least these commands tu setup your user
-      sed -i "s/REPLACE_BY_USER_ID/${id -u $UID}/g" .env
-      sed -i "s/REPLACE_BY_GROUP_ID/${id -g $UID}/g" .env
+      sed -i "s/REPLACE_BY_USER_ID/$UID/g" .env
+      sed -i "s/REPLACE_BY_GROUP_ID/$(id -g $UID)/g" .env
       ```
 
 3. Run the demo decoder with docker compose
