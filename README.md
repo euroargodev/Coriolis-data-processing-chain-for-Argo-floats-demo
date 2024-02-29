@@ -1,6 +1,6 @@
 # Coriolis-data-processing-chain-for-Argo-floats-demo
 
-Coriolis data processing chain for Argo floats Containerized
+Coriolis data processing chain for Argo floats Containerized for Argo workshop
 
 ## Architecture diagram
 
