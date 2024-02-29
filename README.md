@@ -4,30 +4,7 @@ Coriolis data processing chain for Argo floats Containerized
 
 ## Architecture diagram
 
-```mermaid
-graph TD
-   
-      subgraph Docker[Docker]
-            Argo-decoder[DCK Argo.x.y.z]
-      end
-    
-      subgraph Volumes[Volumes]
-            subgraph Data[DATA]
-                  Message[message]
-                  Config[json]
-                  Output[netcdf]
-            end
-            Runtime[RUNTIME]
-            subgraph Ref[REF]
-                  Gebco[GEBCO]
-                  Greylist[Greylist]
-            end
-      end
-
-      Docker -- Read only --> Runtime
-      Docker -- Read / Write --> Data
-      Docker -- Read only --> Ref
-```
+![decoder_docker_argo_workshop drawio (1)](https://github.com/euroargodev/Coriolis-data-processing-chain-for-Argo-floats-demo/assets/5701109/b584ccb9-d31a-4e09-930e-6121f6552182)
 
 **Flux** :
 
